@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title></title>
+	</head>
+
+	<body>
+		<!--第一个是行 第二行列-->
+		<div class="page page-1-1 page-current">
+			1
+		</div>
+		<div class="page page-2-1 top page-current hide">
+			2
+		</div>
+		<div class="page page-2-2 page-current hide">
+
+		</div>
+	</body>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		
+		body {
+			width: 100%;
+			/*overflow: hidden;*/
+		}
+		
+		.page {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			font-size: 100%;
+			text-align: center;
+		}
+		
+		.page-1-1 {
+			background-image: url(image/687474703a2f2f696d672e626c6f672e6373646e2e6e65742f3230313630373238303734333339323838.png);
+			background-size: cover;
+			/*background-size: 100% 100%;*/
+		}
+		
+		.page-2-1 {
+			background-image: url(image/687474703a2f2f696d672e626c6f672e6373646e2e6e65742f3230313630373238303734333339323838.png);
+			background-size: cover;
+			/*background-size: 100% 100%;*/
+		}
+		
+		.page-current {
+			z-index: 1;
+		}
+		
+		.hide {
+			display: none;
+		}
+		
+		@keyframes moveTotop {
+			from {}
+			to {
+				transform: translateY(-100%);
+			}
+		}
+		
+		@keyframes moveTobottom {
+			from {transform: translateY(100%);}
+		}
+		
+		.top {
+			animation: moveTotop .6s ease;
+		}
+		
+		.bottom {
+			animation: moveTobottom .6s ease;
+		}
+	</style>
+	<script>
+		//touchstart
+		//DOM页面渲染后在加载JS运行
+		window.onload = function() {
+			//立即执行一个匿名函数
+			(function() {
+				//alert("滑动事件");
+				//document.getElementsByTagName('body')[0].addEventListener('click',function(){
+				//			console.log("此时是点击事件");
+				//})
+				//现在是在第一行的第一列
+				var now = {
+						row: 1,
+						col: 1
+					}
+					//下一张页面所在的行列
+				var last = {
+						row: 0,
+						col: 0
+					}
+					//定义方向
+				var towards = {
+					up: 1,
+					right: 2,
+					down: 3,
+					left: 4
+				}
+
+				var inAnimateing = false;
+
+				var touch = {}
+				document.getElementsByTagName('body')[0].addEventListener('touchstart', function(e) {
+					console.log("点击滑动前");
+					console.log(e)
+						//点击滑动触发事件的时候会出现TouchEvent对象
+						//出现targetTouches对象里面有 pageX和pageY
+						//鼠标的位置
+						//点击的时候所在的x坐标
+					touch.x1 = e.targetTouches[0].pageX;
+					//点击的时候所在的y坐标
+					touch.y1 = e.targetTouches[0].pageY;
+					console.log('X:' + e.targetTouches[0].pageX + ' Y:' + e.targetTouches[0].pageY)
+				})
+				document.getElementsByTagName('body')[0].addEventListener('touchend', function(e) {
+					console.log("点击滑动后");
+					console.log(e)
+						//点击滑动触发事件的时候会出现TouchEvent对象
+						//出现changedTouches对象里面有 pageX和pageY
+						//鼠标的位置
+						//点击滑动后所在的x坐标
+					touch.x2 = e.changedTouches[0].pageX;
+					//点击滑动后所在的y坐标
+					touch.y2 = e.changedTouches[0].pageY;
+					console.log('X:' + e.changedTouches[0].pageX + ' Y:' + e.changedTouches[0].pageY)
+						//direction(xStart,xEnd,yStart,yEnd)
+						//判断方向
+					console.log(direction(touch.x1, touch.x2, touch.y1, touch.y2));
+					var swiDirection = direction(touch.x1, touch.x2, touch.y1, touch.y2)
+					if(swiDirection == 'top') {
+						last.row = now.row;
+						last.col = now.col
+							//往上拖的时候我们行就加1
+						now.row = last.row + 1;
+						now.col = 1; //
+						console.log(now);
+						pageMove(towards.up);
+					}
+				})
+
+				function hasClass(obj, cls) {
+					return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+				}
+
+				function addClass(obj, cls) {
+					if(!hasClass(obj, cls)) obj.className += " " + cls;
+				}
+
+				function removeClass(obj, cls) {
+					if(hasClass(obj, cls)) {
+						var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+						obj.className = obj.className.replace(reg, ' ');
+					}
+				}
+
+				function toggleClass(obj, cls) {
+					if(hasClass(obj, cls)) {
+						removeClass(obj, cls);
+					} else {
+						addClass(obj, cls);
+					}
+				}
+
+				function pageMove(tw) {
+					//将要跳转到的当前页面
+					var lastPage = ".page-" + last.row + "-" + last.col;
+					//上一个页面
+					var nowPage = ".page-" + now.row + "-" + now.col;
+					switch(tw) {
+						//addClass
+						case towards.up:
+							outClass = "top";
+							inClass = "bottom";
+							break;
+					}
+					var $nowPage = document.querySelector(nowPage);
+					var $lastPage = document.querySelector(lastPage);
+					//滑动时候下一页移动出现
+					removeClass($nowPage,"hide");
+					addClass($lastPage,"top");
+					addClass($nowPage,"bottom");
+				}
+
+				function direction(xStart, xEnd, yStart, yEnd) {
+					/*if(xStart>xEnd){
+						return 'left'
+					}else if(xStart<xEnd){
+						return 'right'
+					}else if(xStart==xEnd){
+						return '原地没动'
+					}
+					
+					if(yStart>yEnd){
+						return 'top'
+					}else if(yStart<yEnd){
+						return 'bottom'
+					}else if(yStart==yEnd){
+						return '原地没动'
+					}*/
+					//位移判断x和y方向那个占
+					/*if(Math.abs(xStart-xEnd)>=Math.abs(yStart-yEnd)){
+						if(xStart>=xEnd){
+							return 'left';
+						}else{
+							return 'right';
+						}
+					}else{
+						if(yStart>=yEnd){
+							return 'top';
+						}else{
+							return 'bottom';
+						}
+					}*/
+					return Math.abs(xStart - xEnd) >= Math.abs(yStart - yEnd) ? (xStart >= xEnd ? "left" : "right") : (yStart >= yEnd ? "top" : "bottom");
+				}
+			})()
+		}
+	</script>
+
+</html>
