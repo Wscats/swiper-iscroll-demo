@@ -12,8 +12,11 @@
 		<div class="page page-1-1 page-current">
 			1
 		</div>
-		<div class="page page-2-1 top page-current hide">
+		<div class="page page-2-1 page-current hide">
 			2
+		</div>
+		<div class="page page-3-1 page-current hide">
+			3
 		</div>
 		<div class="page page-2-2 page-current hide">
 
@@ -50,6 +53,12 @@
 			/*background-size: 100% 100%;*/
 		}
 		
+		.page-3-1 {
+			background-image: url(image/687474703a2f2f696d672e626c6f672e6373646e2e6e65742f3230313630373238303734333339323838.png);
+			background-size: cover;
+			/*background-size: 100% 100%;*/
+		}
+		
 		.page-current {
 			z-index: 1;
 		}
@@ -66,14 +75,16 @@
 		}
 		
 		@keyframes moveTobottom {
-			from {transform: translateY(100%);}
+			from {
+				transform: translateY(100%);
+			}
 		}
 		
 		.top {
 			animation: moveTotop .6s ease;
 		}
 		
-		.bottom {
+		.fromBottom {
 			animation: moveTobottom .6s ease;
 		}
 	</style>
@@ -136,10 +147,15 @@
 					console.log(direction(touch.x1, touch.x2, touch.y1, touch.y2));
 					var swiDirection = direction(touch.x1, touch.x2, touch.y1, touch.y2)
 					if(swiDirection == 'top') {
+						if(inAnimateing) {
+							return
+						}
 						last.row = now.row;
 						last.col = now.col
 							//往上拖的时候我们行就加1
+							//第二行
 						now.row = last.row + 1;
+						//第一列
 						now.col = 1; //
 						console.log(now);
 						pageMove(towards.up);
@@ -170,23 +186,43 @@
 				}
 
 				function pageMove(tw) {
-					//将要跳转到的当前页面
-					var lastPage = ".page-" + last.row + "-" + last.col;
 					//上一个页面
+					var lastPage = ".page-" + last.row + "-" + last.col;
+					//将要跳转到的当前页面
 					var nowPage = ".page-" + now.row + "-" + now.col;
 					switch(tw) {
 						//addClass
 						case towards.up:
 							outClass = "top";
-							inClass = "bottom";
+							inClass = "fromBottom";
 							break;
 					}
+					//动画执行阶段
+					inAnimateing = true;
+					//第二页
 					var $nowPage = document.querySelector(nowPage);
+
+					//第一页
 					var $lastPage = document.querySelector(lastPage);
+					console.log($nowPage);
+					console.log($lastPage);
 					//滑动时候下一页移动出现
-					removeClass($nowPage,"hide");
-					addClass($lastPage,"top");
-					addClass($nowPage,"bottom");
+					//让第二页的隐藏类消失
+					removeClass($nowPage, "hide");
+					//让第一页往上运动
+					addClass($lastPage, outClass);
+					//让第二页也往上运动
+					addClass($nowPage, inClass);
+					setTimeout(
+						function() {
+							removeClass($lastPage, 'page-current');
+							addClass($nowPage, 'page-current');
+							removeClass($lastPage, outClass);
+							removeClass($nowPage, inClass);
+							addClass($lastPage, "hide");
+							//0.6秒后动画完成
+							inAnimateing = false;
+						}, 600)
 				}
 
 				function direction(xStart, xEnd, yStart, yEnd) {
