@@ -1,3 +1,5 @@
+'use strict';
+
 /*=========================
   Mousewheel Control
   ===========================*/
@@ -26,9 +28,9 @@ if (s.params.mousewheelControl) {
 }
 function handleMousewheel(e) {
     if (e.originalEvent) e = e.originalEvent; //jquery fix
-    var we = s.mousewheel.event;
-    var delta = 0;
-    var rtlFactor = s.rtl ? -1 : 1;
+    const we = s.mousewheel.event;
+    let delta = 0;
+    const rtlFactor = s.rtl ? -1 : 1;
 
     //WebKits
     if (we === 'mousewheel') {
@@ -84,8 +86,8 @@ function handleMousewheel(e) {
     }
     else {
         //Freemode or scrollContainer:
-        var position = s.getWrapperTranslate() + delta * s.params.mousewheelSensitivity;
-        var wasBeginning = s.isBeginning,
+        let position = s.getWrapperTranslate() + delta * s.params.mousewheelSensitivity;
+        const wasBeginning = s.isBeginning,
             wasEnd = s.isEnd;
 
         if (position >= s.minTranslate()) position = s.minTranslate();

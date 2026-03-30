@@ -1,9 +1,11 @@
+'use strict';
+
 /*===========================
 Dom7 Library
 ===========================*/
-var Dom7 = (function () {
-    var Dom7 = function (arr) {
-        var _this = this, i = 0;
+let Dom7 = (function () {
+    const Dom7 = function (arr) {
+        const _this = this, i = 0;
         // Create array-like object
         for (i = 0; i < arr.length; i++) {
             _this[i] = arr[i];
@@ -13,7 +15,7 @@ var Dom7 = (function () {
         return this;
     };
     var $ = function (selector, context) {
-        var arr = [], i = 0;
+        const arr = [], i = 0;
         if (selector && !context) {
             if (selector instanceof Dom7) {
                 return selector;
@@ -24,7 +26,7 @@ var Dom7 = (function () {
             if (typeof selector === 'string') {
                 var els, tempParent, html = selector.trim();
                 if (html.indexOf('<') >= 0 && html.indexOf('>') >= 0) {
-                    var toCreate = 'div';
+                    let toCreate = 'div';
                     if (html.indexOf('<li') === 0) toCreate = 'ul';
                     if (html.indexOf('<tr') === 0) toCreate = 'tbody';
                     if (html.indexOf('<td') === 0 || html.indexOf('<th') === 0) toCreate = 'tr';
@@ -69,18 +71,18 @@ var Dom7 = (function () {
             if (typeof className === 'undefined') {
                 return this;
             }
-            var classes = className.split(' ');
-            for (var i = 0; i < classes.length; i++) {
-                for (var j = 0; j < this.length; j++) {
+            let classes = className.split(' ');
+            for (let i = 0; i < classes.length; i++) {
+                for (let j = 0; j < this.length; j++) {
                     this[j].classList.add(classes[i]);
                 }
             }
             return this;
         },
         removeClass: function (className) {
-            var classes = className.split(' ');
-            for (var i = 0; i < classes.length; i++) {
-                for (var j = 0; j < this.length; j++) {
+            let classes = className.split(' ');
+            for (let i = 0; i < classes.length; i++) {
+                for (let j = 0; j < this.length; j++) {
                     this[j].classList.remove(classes[i]);
                 }
             }
@@ -91,9 +93,9 @@ var Dom7 = (function () {
             else return this[0].classList.contains(className);
         },
         toggleClass: function (className) {
-            var classes = className.split(' ');
-            for (var i = 0; i < classes.length; i++) {
-                for (var j = 0; j < this.length; j++) {
+            const classes = className.split(' ');
+            for (let i = 0; i < classes.length; i++) {
+                for (let j = 0; j < this.length; j++) {
                     this[j].classList.toggle(classes[i]);
                 }
             }
@@ -107,7 +109,7 @@ var Dom7 = (function () {
             }
             else {
                 // Set attrs
-                for (var i = 0; i < this.length; i++) {
+                for (let i = 0; i < this.length; i++) {
                     if (arguments.length === 2) {
                         // String
                         this[i].setAttribute(attrs, value);
@@ -124,7 +126,7 @@ var Dom7 = (function () {
             }
         },
         removeAttr: function (attr) {
-            for (var i = 0; i < this.length; i++) {
+            for (let i = 0; i < this.length; i++) {
                 this[i].removeAttribute(attr);
             }
             return this;
@@ -133,7 +135,7 @@ var Dom7 = (function () {
             if (typeof value === 'undefined') {
                 // Get value
                 if (this[0]) {
-                    var dataKey = this[0].getAttribute('data-' + key);
+                    const dataKey = this[0].getAttribute('data-' + key);
                     if (dataKey) return dataKey;
                     else if (this[0].dom7ElementDataStorage && (key in this[0].dom7ElementDataStorage)) return this[0].dom7ElementDataStorage[key];
                     else return undefined;
@@ -142,8 +144,8 @@ var Dom7 = (function () {
             }
             else {
                 // Set value
-                for (var i = 0; i < this.length; i++) {
-                    var el = this[i];
+                for (let i = 0; i < this.length; i++) {
+                    let el = this[i];
                     if (!el.dom7ElementDataStorage) el.dom7ElementDataStorage = {};
                     el.dom7ElementDataStorage[key] = value;
                 }
@@ -152,8 +154,8 @@ var Dom7 = (function () {
         },
         // Transforms
         transform : function (transform) {
-            for (var i = 0; i < this.length; i++) {
-                var elStyle = this[i].style;
+            for (let i = 0; i < this.length; i++) {
+                let elStyle = this[i].style;
                 elStyle.webkitTransform = elStyle.MsTransform = elStyle.msTransform = elStyle.MozTransform = elStyle.OTransform = elStyle.transform = transform;
             }
             return this;
@@ -162,8 +164,8 @@ var Dom7 = (function () {
             if (typeof duration !== 'string') {
                 duration = duration + 'ms';
             }
-            for (var i = 0; i < this.length; i++) {
-                var elStyle = this[i].style;
+            for (let i = 0; i < this.length; i++) {
+                const elStyle = this[i].style;
                 elStyle.webkitTransitionDuration = elStyle.MsTransitionDuration = elStyle.msTransitionDuration = elStyle.MozTransitionDuration = elStyle.OTransitionDuration = elStyle.transitionDuration = duration;
             }
             return this;
@@ -171,16 +173,16 @@ var Dom7 = (function () {
         //Events
         on: function (eventName, targetSelector, listener, capture) {
             function handleLiveEvent(e) {
-                var target = e.target;
+                const target = e.target;
                 if ($(target).is(targetSelector)) listener.call(target, e);
                 else {
-                    var parents = $(target).parents();
-                    for (var k = 0; k < parents.length; k++) {
+                    let parents = $(target).parents();
+                    for (let k = 0; k < parents.length; k++) {
                         if ($(parents[k]).is(targetSelector)) listener.call(parents[k], e);
                     }
                 }
             }
-            var events = eventName.split(' ');
+            let events = eventName.split(' ');
             var i, j;
             for (i = 0; i < this.length; i++) {
                 if (typeof targetSelector === 'function' || targetSelector === false) {
@@ -206,9 +208,9 @@ var Dom7 = (function () {
             return this;
         },
         off: function (eventName, targetSelector, listener, capture) {
-            var events = eventName.split(' ');
-            for (var i = 0; i < events.length; i++) {
-                for (var j = 0; j < this.length; j++) {
+            let events = eventName.split(' ');
+            for (let i = 0; i < events.length; i++) {
+                for (let j = 0; j < this.length; j++) {
                     if (typeof targetSelector === 'function' || targetSelector === false) {
                         // Usual events
                         if (typeof targetSelector === 'function') {
@@ -220,7 +222,7 @@ var Dom7 = (function () {
                     else {
                         // Live event
                         if (this[j].dom7LiveListeners) {
-                            for (var k = 0; k < this[j].dom7LiveListeners.length; k++) {
+                            for (let k = 0; k < this[j].dom7LiveListeners.length; k++) {
                                 if (this[j].dom7LiveListeners[k].listener === listener) {
                                     this[j].removeEventListener(events[i], this[j].dom7LiveListeners[k].liveListener, capture);
                                 }
@@ -232,7 +234,7 @@ var Dom7 = (function () {
             return this;
         },
         once: function (eventName, targetSelector, listener, capture) {
-            var dom = this;
+            let dom = this;
             if (typeof targetSelector === 'function') {
                 targetSelector = false;
                 listener = arguments[1];
@@ -245,7 +247,7 @@ var Dom7 = (function () {
             dom.on(eventName, targetSelector, proxy, capture);
         },
         trigger: function (eventName, eventData) {
-            for (var i = 0; i < this.length; i++) {
+            for (let i = 0; i < this.length; i++) {
                 var evt;
                 try {
                     evt = new window.CustomEvent(eventName, {detail: eventData, bubbles: true, cancelable: true});
@@ -260,7 +262,7 @@ var Dom7 = (function () {
             return this;
         },
         transitionEnd: function (callback) {
-            var events = ['webkitTransitionEnd', 'transitionend', 'oTransitionEnd', 'MSTransitionEnd', 'msTransitionEnd'],
+            const events = ['webkitTransitionEnd', 'transitionend', 'oTransitionEnd', 'MSTransitionEnd', 'msTransitionEnd'],
                 i, j, dom = this;
             function fireCallBack(e) {
                 /*jshint validthis:true */
@@ -324,13 +326,13 @@ var Dom7 = (function () {
         },
         offset: function () {
             if (this.length > 0) {
-                var el = this[0];
-                var box = el.getBoundingClientRect();
-                var body = document.body;
-                var clientTop  = el.clientTop  || body.clientTop  || 0;
-                var clientLeft = el.clientLeft || body.clientLeft || 0;
-                var scrollTop  = window.pageYOffset || el.scrollTop;
-                var scrollLeft = window.pageXOffset || el.scrollLeft;
+                let el = this[0];
+                const box = el.getBoundingClientRect();
+                const body = document.body;
+                const clientTop  = el.clientTop  || body.clientTop  || 0;
+                const clientLeft = el.clientLeft || body.clientLeft || 0;
+                const scrollTop  = window.pageYOffset || el.scrollTop;
+                const scrollLeft = window.pageXOffset || el.scrollLeft;
                 return {
                     top: box.top  + scrollTop  - clientTop,
                     left: box.left + scrollLeft - clientLeft
@@ -366,7 +368,7 @@ var Dom7 = (function () {
 
         //Dom manipulation
         each: function (callback) {
-            for (var i = 0; i < this.length; i++) {
+            for (let i = 0; i < this.length; i++) {
                 callback.call(this[i], i, this[i]);
             }
             return this;
@@ -376,7 +378,7 @@ var Dom7 = (function () {
                 return this[0] ? this[0].innerHTML : undefined;
             }
             else {
-                for (var i = 0; i < this.length; i++) {
+                for (let i = 0; i < this.length; i++) {
                     this[i].innerHTML = html;
                 }
                 return this;
@@ -390,7 +392,7 @@ var Dom7 = (function () {
                 else return null;
             }
             else {
-                for (var i = 0; i < this.length; i++) {
+                for (let i = 0; i < this.length; i++) {
                     this[i].textContent = text;
                 }
                 return this;
@@ -400,7 +402,7 @@ var Dom7 = (function () {
             if (!this[0]) return false;
             var compareWith, i;
             if (typeof selector === 'string') {
-                var el = this[0];
+                let el = this[0];
                 if (el === document) return selector === document;
                 if (el === window) return selector === window;
 
@@ -432,8 +434,8 @@ var Dom7 = (function () {
         },
         index: function () {
             if (this[0]) {
-                var child = this[0];
-                var i = 0;
+                let child = this[0];
+                let i = 0;
                 while ((child = child.previousSibling) !== null) {
                     if (child.nodeType === 1) i++;
                 }
@@ -443,7 +445,7 @@ var Dom7 = (function () {
         },
         eq: function (index) {
             if (typeof index === 'undefined') return this;
-            var length = this.length;
+            let length = this.length;
             var returnIndex;
             if (index > length - 1) {
                 return new Dom7([]);
@@ -459,7 +461,7 @@ var Dom7 = (function () {
             var i, j;
             for (i = 0; i < this.length; i++) {
                 if (typeof newChild === 'string') {
-                    var tempDiv = document.createElement('div');
+                    let tempDiv = document.createElement('div');
                     tempDiv.innerHTML = newChild;
                     while (tempDiv.firstChild) {
                         this[i].appendChild(tempDiv.firstChild);
@@ -480,7 +482,7 @@ var Dom7 = (function () {
             var i, j;
             for (i = 0; i < this.length; i++) {
                 if (typeof newChild === 'string') {
-                    var tempDiv = document.createElement('div');
+                    const tempDiv = document.createElement('div');
                     tempDiv.innerHTML = newChild;
                     for (j = tempDiv.childNodes.length - 1; j >= 0; j--) {
                         this[i].insertBefore(tempDiv.childNodes[j], this[i].childNodes[0]);
@@ -499,26 +501,26 @@ var Dom7 = (function () {
             return this;
         },
         insertBefore: function (selector) {
-            var before = $(selector);
-            for (var i = 0; i < this.length; i++) {
+            const before = $(selector);
+            for (let i = 0; i < this.length; i++) {
                 if (before.length === 1) {
                     before[0].parentNode.insertBefore(this[i], before[0]);
                 }
                 else if (before.length > 1) {
-                    for (var j = 0; j < before.length; j++) {
+                    for (let j = 0; j < before.length; j++) {
                         before[j].parentNode.insertBefore(this[i].cloneNode(true), before[j]);
                     }
                 }
             }
         },
         insertAfter: function (selector) {
-            var after = $(selector);
-            for (var i = 0; i < this.length; i++) {
+            const after = $(selector);
+            for (let i = 0; i < this.length; i++) {
                 if (after.length === 1) {
                     after[0].parentNode.insertBefore(this[i], after[0].nextSibling);
                 }
                 else if (after.length > 1) {
-                    for (var j = 0; j < after.length; j++) {
+                    for (let j = 0; j < after.length; j++) {
                         after[j].parentNode.insertBefore(this[i].cloneNode(true), after[j].nextSibling);
                     }
                 }
@@ -538,11 +540,11 @@ var Dom7 = (function () {
             else return new Dom7([]);
         },
         nextAll: function (selector) {
-            var nextEls = [];
-            var el = this[0];
+            const nextEls = [];
+            let el = this[0];
             if (!el) return new Dom7([]);
             while (el.nextElementSibling) {
-                var next = el.nextElementSibling;
+                const next = el.nextElementSibling;
                 if (selector) {
                     if($(next).is(selector)) nextEls.push(next);
                 }
@@ -565,11 +567,11 @@ var Dom7 = (function () {
             else return new Dom7([]);
         },
         prevAll: function (selector) {
-            var prevEls = [];
-            var el = this[0];
+            const prevEls = [];
+            let el = this[0];
             if (!el) return new Dom7([]);
             while (el.previousElementSibling) {
-                var prev = el.previousElementSibling;
+                const prev = el.previousElementSibling;
                 if (selector) {
                     if($(prev).is(selector)) prevEls.push(prev);
                 }
@@ -579,8 +581,8 @@ var Dom7 = (function () {
             return new Dom7(prevEls);
         },
         parent: function (selector) {
-            var parents = [];
-            for (var i = 0; i < this.length; i++) {
+            let parents = [];
+            for (let i = 0; i < this.length; i++) {
                 if (selector) {
                     if ($(this[i].parentNode).is(selector)) parents.push(this[i].parentNode);
                 }
@@ -591,9 +593,9 @@ var Dom7 = (function () {
             return $($.unique(parents));
         },
         parents: function (selector) {
-            var parents = [];
-            for (var i = 0; i < this.length; i++) {
-                var parent = this[i].parentNode;
+            const parents = [];
+            for (let i = 0; i < this.length; i++) {
+                let parent = this[i].parentNode;
                 while (parent) {
                     if (selector) {
                         if ($(parent).is(selector)) parents.push(parent);
@@ -607,21 +609,21 @@ var Dom7 = (function () {
             return $($.unique(parents));
         },
         find : function (selector) {
-            var foundElements = [];
-            for (var i = 0; i < this.length; i++) {
-                var found = this[i].querySelectorAll(selector);
-                for (var j = 0; j < found.length; j++) {
+            const foundElements = [];
+            for (let i = 0; i < this.length; i++) {
+                const found = this[i].querySelectorAll(selector);
+                for (let j = 0; j < found.length; j++) {
                     foundElements.push(found[j]);
                 }
             }
             return new Dom7(foundElements);
         },
         children: function (selector) {
-            var children = [];
-            for (var i = 0; i < this.length; i++) {
-                var childNodes = this[i].childNodes;
+            const children = [];
+            for (let i = 0; i < this.length; i++) {
+                const childNodes = this[i].childNodes;
 
-                for (var j = 0; j < childNodes.length; j++) {
+                for (let j = 0; j < childNodes.length; j++) {
                     if (!selector) {
                         if (childNodes[j].nodeType === 1) children.push(childNodes[j]);
                     }
@@ -633,16 +635,16 @@ var Dom7 = (function () {
             return new Dom7($.unique(children));
         },
         remove: function () {
-            for (var i = 0; i < this.length; i++) {
+            for (let i = 0; i < this.length; i++) {
                 if (this[i].parentNode) this[i].parentNode.removeChild(this[i]);
             }
             return this;
         },
         add: function () {
-            var dom = this;
+            const dom = this;
             var i, j;
             for (i = 0; i < arguments.length; i++) {
-                var toAdd = $(arguments[i]);
+                const toAdd = $(arguments[i]);
                 for (j = 0; j < toAdd.length; j++) {
                     dom[dom.length] = toAdd[j];
                     dom.length++;
@@ -653,8 +655,8 @@ var Dom7 = (function () {
     };
     $.fn = Dom7.prototype;
     $.unique = function (arr) {
-        var unique = [];
-        for (var i = 0; i < arr.length; i++) {
+        const unique = [];
+        for (let i = 0; i < arr.length; i++) {
             if (unique.indexOf(arr[i]) === -1) unique.push(arr[i]);
         }
         return unique;

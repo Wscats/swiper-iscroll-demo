@@ -1,8 +1,10 @@
+'use strict';
+
 /*===========================
  Get Dom libraries
  ===========================*/
-var swiperDomPlugins = ['jQuery', 'Zepto', 'Dom7'];
-for (var i = 0; i < swiperDomPlugins.length; i++) {
+const swiperDomPlugins = ['jQuery', 'Zepto', 'Dom7'];
+for (let i = 0; i < swiperDomPlugins.length; i++) {
 	if (window[swiperDomPlugins[i]]) {
 		addLibraryPlugin(window[swiperDomPlugins[i]]);
 	}

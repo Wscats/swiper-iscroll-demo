@@ -1,6 +1,6 @@
 (function(){
     'use strict';
-    var gulp = require('gulp'),
+    const gulp = require('gulp'),
         connect = require('gulp-connect'),
         open = require('gulp-open'),
         less = require('gulp-less'),
@@ -147,8 +147,8 @@
         };
 
     function addJSIndent (file, t, minusIndent) {
-        var addIndent = '        ';
-        var filename = file.path.split('src/js/')[1];
+        let addIndent = '        ';
+        const filename = file.path.split('src/js/')[1];
         if (['wrap-start.js', 'wrap-start-umd.js', 'wrap-end.js', 'wrap-end-umd.js', 'amd.js'].indexOf(filename) !== -1) {
             addIndent = '';
         }
@@ -157,9 +157,9 @@
             addIndent = addIndent.substring(4);
         }
         if (addIndent !== '') {
-            var fileLines = fs.readFileSync(file.path).toString().split('\n');
-            var newFileContents = '';
-            for (var i = 0; i < fileLines.length; i++) {
+            const fileLines = fs.readFileSync(file.path).toString().split('\n');
+            const newFileContents = '';
+            for (let i = 0; i < fileLines.length; i++) {
                 newFileContents += addIndent + fileLines[i] + (i === fileLines.length ? '' : '\n');
             }
             file.contents = new Buffer(newFileContents);

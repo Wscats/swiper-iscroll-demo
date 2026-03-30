@@ -1,3 +1,5 @@
+'use strict';
+
 /*=========================
   Events/Callbacks/Plugins Emitter
   ===========================*/
@@ -52,7 +54,7 @@ s.off = function (eventName, handler) {
 };
 s.once = function (eventName, handler) {
     eventName = normalizeEventName(eventName);
-    var _handler = function () {
+    const _handler = function () {
         handler(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
         s.off(eventName, _handler);
     };

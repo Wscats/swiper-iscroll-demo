@@ -1,3 +1,5 @@
+'use strict';
+
 /*=========================
   Controller
   ===========================*/
@@ -10,7 +12,7 @@ s.controller = {
         // (x1,y1) is the known point before given value,
         // (x3,y3) is the known point after given value.
         var i1, i3;
-        var l = this.x.length;
+        const l = this.x.length;
 
         this.interpolate = function (x2) {
             if (!x2) return 0;
@@ -24,7 +26,7 @@ s.controller = {
             return ((x2 - this.x[i1]) * (this.y[i3] - this.y[i1])) / (this.x[i3] - this.x[i1]) + this.y[i1];
         };
 
-        var binarySearch = (function() {
+        const binarySearch = (function() {
             var maxIndex, minIndex, guess;
             return function(array, val) {
                 minIndex = -1;
@@ -46,7 +48,7 @@ s.controller = {
             new s.controller.LinearSpline(s.snapGrid, c.snapGrid);
     },
     setTranslate: function (translate, byController) {
-       var controlled = s.params.control;
+       let controlled = s.params.control;
        var multiplier, controlledTranslate;
        function setControlledTranslate(c) {
             // this will create an Interpolate function based on the snapGrids
@@ -74,7 +76,7 @@ s.controller = {
             c.updateActiveIndex();
        }
        if (s.isArray(controlled)) {
-           for (var i = 0; i < controlled.length; i++) {
+           for (let i = 0; i < controlled.length; i++) {
                if (controlled[i] !== byController && controlled[i] instanceof Swiper) {
                    setControlledTranslate(controlled[i]);
                }
@@ -86,7 +88,7 @@ s.controller = {
        }
     },
     setTransition: function (duration, byController) {
-        var controlled = s.params.control;
+        const controlled = s.params.control;
         var i;
         function setControlledTransition(c) {
             c.setWrapperTransition(duration, s);

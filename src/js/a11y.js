@@ -1,3 +1,5 @@
+'use strict';
+
 // Accessibility tools
 s.a11y = {
     makeFocusable: function ($el) {
@@ -52,7 +54,7 @@ s.a11y = {
     liveRegion: $('<span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>'),
 
     notify: function (message) {
-        var notification = s.a11y.liveRegion;
+        const notification = s.a11y.liveRegion;
         if (notification.length === 0) return;
         notification.html('');
         notification.html(message);
@@ -75,7 +77,7 @@ s.a11y = {
     initPagination: function () {
         if (s.params.pagination && s.params.paginationClickable && s.bullets && s.bullets.length) {
             s.bullets.each(function () {
-                var bullet = $(this);
+                const bullet = $(this);
                 s.a11y.makeFocusable(bullet);
                 s.a11y.addRole(bullet, 'button');
                 s.a11y.addLabel(bullet, s.params.paginationBulletMessage.replace(/{{index}}/, bullet.index() + 1));

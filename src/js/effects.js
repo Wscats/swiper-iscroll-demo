@@ -1,20 +1,22 @@
+'use strict';
+
 /*=========================
   Effects
   ===========================*/
 s.effects = {
     fade: {
         setTranslate: function () {
-            for (var i = 0; i < s.slides.length; i++) {
-                var slide = s.slides.eq(i);
-                var offset = slide[0].swiperSlideOffset;
-                var tx = -offset;
+            for (let i = 0; i < s.slides.length; i++) {
+                let slide = s.slides.eq(i);
+                let offset = slide[0].swiperSlideOffset;
+                let tx = -offset;
                 if (!s.params.virtualTranslate) tx = tx - s.translate;
-                var ty = 0;
+                let ty = 0;
                 if (!s.isHorizontal()) {
                     ty = tx;
                     tx = 0;
                 }
-                var slideOpacity = s.params.fade.crossFade ?
+                const slideOpacity = s.params.fade.crossFade ?
                         Math.max(1 - Math.abs(slide[0].progress), 0) :
                         1 + Math.min(Math.max(slide[0].progress, -1), 0);
                 slide
@@ -29,14 +31,14 @@ s.effects = {
         setTransition: function (duration) {
             s.slides.transition(duration);
             if (s.params.virtualTranslate && duration !== 0) {
-                var eventTriggered = false;
+                let eventTriggered = false;
                 s.slides.transitionEnd(function () {
                     if (eventTriggered) return;
                     if (!s) return;
                     eventTriggered = true;
                     s.animating = false;
-                    var triggerEvents = ['webkitTransitionEnd', 'transitionend', 'oTransitionEnd', 'MSTransitionEnd', 'msTransitionEnd'];
-                    for (var i = 0; i < triggerEvents.length; i++) {
+                    let triggerEvents = ['webkitTransitionEnd', 'transitionend', 'oTransitionEnd', 'MSTransitionEnd', 'msTransitionEnd'];
+                    for (let i = 0; i < triggerEvents.length; i++) {
                         s.wrapper.trigger(triggerEvents[i]);
                     }
                 });
@@ -45,14 +47,14 @@ s.effects = {
     },
     flip: {
         setTranslate: function () {
-            for (var i = 0; i < s.slides.length; i++) {
-                var slide = s.slides.eq(i);
-                var progress = slide[0].progress;
+            for (let i = 0; i < s.slides.length; i++) {
+                let slide = s.slides.eq(i);
+                let progress = slide[0].progress;
                 if (s.params.flip.limitRotation) {
                     progress = Math.max(Math.min(slide[0].progress, 1), -1);
                 }
-                var offset = slide[0].swiperSlideOffset;
-                var rotate = -180 * progress,
+                let offset = slide[0].swiperSlideOffset;
+                let rotate = -180 * progress,
                     rotateY = rotate,
                     rotateX = 0,
                     tx = -offset,
@@ -71,8 +73,8 @@ s.effects = {
 
                 if (s.params.flip.slideShadows) {
                     //Set shadows
-                    var shadowBefore = s.isHorizontal() ? slide.find('.swiper-slide-shadow-left') : slide.find('.swiper-slide-shadow-top');
-                    var shadowAfter = s.isHorizontal() ? slide.find('.swiper-slide-shadow-right') : slide.find('.swiper-slide-shadow-bottom');
+                    let shadowBefore = s.isHorizontal() ? slide.find('.swiper-slide-shadow-left') : slide.find('.swiper-slide-shadow-top');
+                    let shadowAfter = s.isHorizontal() ? slide.find('.swiper-slide-shadow-right') : slide.find('.swiper-slide-shadow-bottom');
                     if (shadowBefore.length === 0) {
                         shadowBefore = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'left' : 'top') + '"></div>');
                         slide.append(shadowBefore);
@@ -92,15 +94,15 @@ s.effects = {
         setTransition: function (duration) {
             s.slides.transition(duration).find('.swiper-slide-shadow-top, .swiper-slide-shadow-right, .swiper-slide-shadow-bottom, .swiper-slide-shadow-left').transition(duration);
             if (s.params.virtualTranslate && duration !== 0) {
-                var eventTriggered = false;
+                let eventTriggered = false;
                 s.slides.eq(s.activeIndex).transitionEnd(function () {
                     if (eventTriggered) return;
                     if (!s) return;
                     if (!$(this).hasClass(s.params.slideActiveClass)) return;
                     eventTriggered = true;
                     s.animating = false;
-                    var triggerEvents = ['webkitTransitionEnd', 'transitionend', 'oTransitionEnd', 'MSTransitionEnd', 'msTransitionEnd'];
-                    for (var i = 0; i < triggerEvents.length; i++) {
+                    const triggerEvents = ['webkitTransitionEnd', 'transitionend', 'oTransitionEnd', 'MSTransitionEnd', 'msTransitionEnd'];
+                    for (let i = 0; i < triggerEvents.length; i++) {
                         s.wrapper.trigger(triggerEvents[i]);
                     }
                 });
@@ -109,7 +111,7 @@ s.effects = {
     },
     cube: {
         setTranslate: function () {
-            var wrapperRotate = 0, cubeShadow;
+            let wrapperRotate = 0, cubeShadow;
             if (s.params.cube.shadow) {
                 if (s.isHorizontal()) {
                     cubeShadow = s.wrapper.find('.swiper-cube-shadow');
@@ -127,16 +129,16 @@ s.effects = {
                     }
                 }
             }
-            for (var i = 0; i < s.slides.length; i++) {
-                var slide = s.slides.eq(i);
-                var slideAngle = i * 90;
-                var round = Math.floor(slideAngle / 360);
+            for (let i = 0; i < s.slides.length; i++) {
+                let slide = s.slides.eq(i);
+                let slideAngle = i * 90;
+                let round = Math.floor(slideAngle / 360);
                 if (s.rtl) {
                     slideAngle = -slideAngle;
                     round = Math.floor(-slideAngle / 360);
                 }
-                var progress = Math.max(Math.min(slide[0].progress, 1), -1);
-                var tx = 0, ty = 0, tz = 0;
+                const progress = Math.max(Math.min(slide[0].progress, 1), -1);
+                let tx = 0, ty = 0, tz = 0;
                 if (i % 4 === 0) {
                     tx = - round * 4 * s.size;
                     tz = 0;
@@ -162,7 +164,7 @@ s.effects = {
                     tx = 0;
                 }
 
-                var transform = 'rotateX(' + (s.isHorizontal() ? 0 : -slideAngle) + 'deg) rotateY(' + (s.isHorizontal() ? slideAngle : 0) + 'deg) translate3d(' + tx + 'px, ' + ty + 'px, ' + tz + 'px)';
+                let transform = 'rotateX(' + (s.isHorizontal() ? 0 : -slideAngle) + 'deg) rotateY(' + (s.isHorizontal() ? slideAngle : 0) + 'deg) translate3d(' + tx + 'px, ' + ty + 'px, ' + tz + 'px)';
                 if (progress <= 1 && progress > -1) {
                     wrapperRotate = i * 90 + progress * 90;
                     if (s.rtl) wrapperRotate = -i * 90 - progress * 90;
@@ -170,8 +172,8 @@ s.effects = {
                 slide.transform(transform);
                 if (s.params.cube.slideShadows) {
                     //Set shadows
-                    var shadowBefore = s.isHorizontal() ? slide.find('.swiper-slide-shadow-left') : slide.find('.swiper-slide-shadow-top');
-                    var shadowAfter = s.isHorizontal() ? slide.find('.swiper-slide-shadow-right') : slide.find('.swiper-slide-shadow-bottom');
+                    let shadowBefore = s.isHorizontal() ? slide.find('.swiper-slide-shadow-left') : slide.find('.swiper-slide-shadow-top');
+                    let shadowAfter = s.isHorizontal() ? slide.find('.swiper-slide-shadow-right') : slide.find('.swiper-slide-shadow-bottom');
                     if (shadowBefore.length === 0) {
                         shadowBefore = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'left' : 'top') + '"></div>');
                         slide.append(shadowBefore);
@@ -196,15 +198,15 @@ s.effects = {
                     cubeShadow.transform('translate3d(0px, ' + (s.width / 2 + s.params.cube.shadowOffset) + 'px, ' + (-s.width / 2) + 'px) rotateX(90deg) rotateZ(0deg) scale(' + (s.params.cube.shadowScale) + ')');
                 }
                 else {
-                    var shadowAngle = Math.abs(wrapperRotate) - Math.floor(Math.abs(wrapperRotate) / 90) * 90;
-                    var multiplier = 1.5 - (Math.sin(shadowAngle * 2 * Math.PI / 360) / 2 + Math.cos(shadowAngle * 2 * Math.PI / 360) / 2);
-                    var scale1 = s.params.cube.shadowScale,
+                    const shadowAngle = Math.abs(wrapperRotate) - Math.floor(Math.abs(wrapperRotate) / 90) * 90;
+                    const multiplier = 1.5 - (Math.sin(shadowAngle * 2 * Math.PI / 360) / 2 + Math.cos(shadowAngle * 2 * Math.PI / 360) / 2);
+                    const scale1 = s.params.cube.shadowScale,
                         scale2 = s.params.cube.shadowScale / multiplier,
                         offset = s.params.cube.shadowOffset;
                     cubeShadow.transform('scale3d(' + scale1 + ', 1, ' + scale2 + ') translate3d(0px, ' + (s.height / 2 + offset) + 'px, ' + (-s.height / 2 / scale2) + 'px) rotateX(-90deg)');
                 }
             }
-            var zFactor = (s.isSafari || s.isUiWebView) ? (-s.size / 2) : 0;
+            const zFactor = (s.isSafari || s.isUiWebView) ? (-s.size / 2) : 0;
             s.wrapper.transform('translate3d(0px,0,' + zFactor + 'px) rotateX(' + (s.isHorizontal() ? 0 : wrapperRotate) + 'deg) rotateY(' + (s.isHorizontal() ? -wrapperRotate : 0) + 'deg)');
         },
         setTransition: function (duration) {
@@ -216,24 +218,24 @@ s.effects = {
     },
     coverflow: {
         setTranslate: function () {
-            var transform = s.translate;
-            var center = s.isHorizontal() ? -transform + s.width / 2 : -transform + s.height / 2;
-            var rotate = s.isHorizontal() ? s.params.coverflow.rotate: -s.params.coverflow.rotate;
-            var translate = s.params.coverflow.depth;
+            const transform = s.translate;
+            const center = s.isHorizontal() ? -transform + s.width / 2 : -transform + s.height / 2;
+            const rotate = s.isHorizontal() ? s.params.coverflow.rotate: -s.params.coverflow.rotate;
+            const translate = s.params.coverflow.depth;
             //Each slide offset from center
-            for (var i = 0, length = s.slides.length; i < length; i++) {
-                var slide = s.slides.eq(i);
-                var slideSize = s.slidesSizesGrid[i];
-                var slideOffset = slide[0].swiperSlideOffset;
-                var offsetMultiplier = (center - slideOffset - slideSize / 2) / slideSize * s.params.coverflow.modifier;
+            for (let i = 0, length = s.slides.length; i < length; i++) {
+                const slide = s.slides.eq(i);
+                const slideSize = s.slidesSizesGrid[i];
+                const slideOffset = slide[0].swiperSlideOffset;
+                const offsetMultiplier = (center - slideOffset - slideSize / 2) / slideSize * s.params.coverflow.modifier;
 
-                var rotateY = s.isHorizontal() ? rotate * offsetMultiplier : 0;
-                var rotateX = s.isHorizontal() ? 0 : rotate * offsetMultiplier;
-                // var rotateZ = 0
-                var translateZ = -translate * Math.abs(offsetMultiplier);
+                let rotateY = s.isHorizontal() ? rotate * offsetMultiplier : 0;
+                let rotateX = s.isHorizontal() ? 0 : rotate * offsetMultiplier;
+                // const rotateZ = 0
+                let translateZ = -translate * Math.abs(offsetMultiplier);
 
-                var translateY = s.isHorizontal() ? 0 : s.params.coverflow.stretch * (offsetMultiplier);
-                var translateX = s.isHorizontal() ? s.params.coverflow.stretch * (offsetMultiplier) : 0;
+                let translateY = s.isHorizontal() ? 0 : s.params.coverflow.stretch * (offsetMultiplier);
+                let translateX = s.isHorizontal() ? s.params.coverflow.stretch * (offsetMultiplier) : 0;
 
                 //Fix for ultra small values
                 if (Math.abs(translateX) < 0.001) translateX = 0;
@@ -242,14 +244,14 @@ s.effects = {
                 if (Math.abs(rotateY) < 0.001) rotateY = 0;
                 if (Math.abs(rotateX) < 0.001) rotateX = 0;
 
-                var slideTransform = 'translate3d(' + translateX + 'px,' + translateY + 'px,' + translateZ + 'px)  rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
+                const slideTransform = 'translate3d(' + translateX + 'px,' + translateY + 'px,' + translateZ + 'px)  rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
 
                 slide.transform(slideTransform);
                 slide[0].style.zIndex = -Math.abs(Math.round(offsetMultiplier)) + 1;
                 if (s.params.coverflow.slideShadows) {
                     //Set shadows
-                    var shadowBefore = s.isHorizontal() ? slide.find('.swiper-slide-shadow-left') : slide.find('.swiper-slide-shadow-top');
-                    var shadowAfter = s.isHorizontal() ? slide.find('.swiper-slide-shadow-right') : slide.find('.swiper-slide-shadow-bottom');
+                    let shadowBefore = s.isHorizontal() ? slide.find('.swiper-slide-shadow-left') : slide.find('.swiper-slide-shadow-top');
+                    let shadowAfter = s.isHorizontal() ? slide.find('.swiper-slide-shadow-right') : slide.find('.swiper-slide-shadow-bottom');
                     if (shadowBefore.length === 0) {
                         shadowBefore = $('<div class="swiper-slide-shadow-' + (s.isHorizontal() ? 'left' : 'top') + '"></div>');
                         slide.append(shadowBefore);
@@ -265,7 +267,7 @@ s.effects = {
 
             //Set correct perspective for IE10
             if (s.browser.ie) {
-                var ws = s.wrapper[0].style;
+                const ws = s.wrapper[0].style;
                 ws.perspectiveOrigin = center + 'px 50%';
             }
         },

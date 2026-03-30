@@ -1,7 +1,9 @@
+'use strict';
+
 /*===========================
  Get jQuery
  ===========================*/
 
 addLibraryPlugin($);
 
-var domLib = $;
+const domLib = $;

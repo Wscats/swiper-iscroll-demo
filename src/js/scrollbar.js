@@ -1,18 +1,20 @@
+'use strict';
+
 /*=========================
   Scrollbar
   ===========================*/
 s.scrollbar = {
     isTouched: false,
     setDragPosition: function (e) {
-        var sb = s.scrollbar;
-        var x = 0, y = 0;
+        let sb = s.scrollbar;
+        const x = 0, y = 0;
         var translate;
-        var pointerPosition = s.isHorizontal() ?
+        const pointerPosition = s.isHorizontal() ?
             ((e.type === 'touchstart' || e.type === 'touchmove') ? e.targetTouches[0].pageX : e.pageX || e.clientX) :
             ((e.type === 'touchstart' || e.type === 'touchmove') ? e.targetTouches[0].pageY : e.pageY || e.clientY) ;
-        var position = (pointerPosition) - sb.track.offset()[s.isHorizontal() ? 'left' : 'top'] - sb.dragSize / 2;
-        var positionMin = -s.minTranslate() * sb.moveDivider;
-        var positionMax = -s.maxTranslate() * sb.moveDivider;
+        let position = (pointerPosition) - sb.track.offset()[s.isHorizontal() ? 'left' : 'top'] - sb.dragSize / 2;
+        const positionMin = -s.minTranslate() * sb.moveDivider;
+        const positionMax = -s.maxTranslate() * sb.moveDivider;
         if (position < positionMin) {
             position = positionMin;
         }
@@ -24,7 +26,7 @@ s.scrollbar = {
         s.setWrapperTranslate(position, true);
     },
     dragStart: function (e) {
-        var sb = s.scrollbar;
+        let sb = s.scrollbar;
         sb.isTouched = true;
         e.preventDefault();
         e.stopPropagation();
@@ -41,7 +43,7 @@ s.scrollbar = {
         s.emit('onScrollbarDragStart', s);
     },
     dragMove: function (e) {
-        var sb = s.scrollbar;
+        let sb = s.scrollbar;
         if (!sb.isTouched) return;
         if (e.preventDefault) e.preventDefault();
         else e.returnValue = false;
@@ -52,7 +54,7 @@ s.scrollbar = {
         s.emit('onScrollbarDragMove', s);
     },
     dragEnd: function (e) {
-        var sb = s.scrollbar;
+        let sb = s.scrollbar;
         if (!sb.isTouched) return;
         sb.isTouched = false;
         if (s.params.scrollbarHide) {
@@ -69,22 +71,22 @@ s.scrollbar = {
         }
     },
     enableDraggable: function () {
-        var sb = s.scrollbar;
-        var target = s.support.touch ? sb.track : document;
+        let sb = s.scrollbar;
+        let target = s.support.touch ? sb.track : document;
         $(sb.track).on(s.touchEvents.start, sb.dragStart);
         $(target).on(s.touchEvents.move, sb.dragMove);
         $(target).on(s.touchEvents.end, sb.dragEnd);
     },
     disableDraggable: function () {
-        var sb = s.scrollbar;
-        var target = s.support.touch ? sb.track : document;
+        let sb = s.scrollbar;
+        const target = s.support.touch ? sb.track : document;
         $(sb.track).off(s.touchEvents.start, sb.dragStart);
         $(target).off(s.touchEvents.move, sb.dragMove);
         $(target).off(s.touchEvents.end, sb.dragEnd);
     },
     set: function () {
         if (!s.params.scrollbar) return;
-        var sb = s.scrollbar;
+        let sb = s.scrollbar;
         sb.track = $(s.params.scrollbar);
         if (s.params.uniqueNavElements && typeof s.params.scrollbar === 'string' && sb.track.length > 1 && s.container.find(s.params.scrollbar).length === 1) {
             sb.track = s.container.find(s.params.scrollbar);
@@ -122,11 +124,11 @@ s.scrollbar = {
     setTranslate: function () {
         if (!s.params.scrollbar) return;
         var diff;
-        var sb = s.scrollbar;
-        var translate = s.translate || 0;
+        const sb = s.scrollbar;
+        const translate = s.translate || 0;
         var newPos;
 
-        var newSize = sb.dragSize;
+        let newSize = sb.dragSize;
         newPos = (sb.trackSize - sb.dragSize) * s.progress;
         if (s.rtl && s.isHorizontal()) {
             newPos = -newPos;

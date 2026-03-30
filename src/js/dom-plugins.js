@@ -1,3 +1,5 @@
+'use strict';
+
 /*===========================
 Add .swiper plugin from Dom libraries
 ===========================*/
@@ -5,7 +7,7 @@ function addLibraryPlugin(lib) {
     lib.fn.swiper = function (params) {
         var firstInstance;
         lib(this).each(function () {
-            var s = new Swiper(this, params);
+            const s = new Swiper(this, params);
             if (!firstInstance) firstInstance = s;
         });
         return firstInstance;
@@ -15,7 +17,7 @@ function addLibraryPlugin(lib) {
 if (domLib) {
     if (!('transitionEnd' in domLib.fn)) {
         domLib.fn.transitionEnd = function (callback) {
-            var events = ['webkitTransitionEnd', 'transitionend', 'oTransitionEnd', 'MSTransitionEnd', 'msTransitionEnd'],
+            const events = ['webkitTransitionEnd', 'transitionend', 'oTransitionEnd', 'MSTransitionEnd', 'msTransitionEnd'],
                 i, j, dom = this;
             function fireCallBack(e) {
                 /*jshint validthis:true */
@@ -35,8 +37,8 @@ if (domLib) {
     }
     if (!('transform' in domLib.fn)) {
         domLib.fn.transform = function (transform) {
-            for (var i = 0; i < this.length; i++) {
-                var elStyle = this[i].style;
+            for (let i = 0; i < this.length; i++) {
+                let elStyle = this[i].style;
                 elStyle.webkitTransform = elStyle.MsTransform = elStyle.msTransform = elStyle.MozTransform = elStyle.OTransform = elStyle.transform = transform;
             }
             return this;
@@ -47,8 +49,8 @@ if (domLib) {
             if (typeof duration !== 'string') {
                 duration = duration + 'ms';
             }
-            for (var i = 0; i < this.length; i++) {
-                var elStyle = this[i].style;
+            for (let i = 0; i < this.length; i++) {
+                const elStyle = this[i].style;
                 elStyle.webkitTransitionDuration = elStyle.MsTransitionDuration = elStyle.msTransitionDuration = elStyle.MozTransitionDuration = elStyle.OTransitionDuration = elStyle.transitionDuration = duration;
             }
             return this;

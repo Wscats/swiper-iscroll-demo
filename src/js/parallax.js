@@ -1,10 +1,12 @@
+'use strict';
+
 /*=========================
   Parallax
   ===========================*/
 function setParallaxTransform(el, progress) {
     el = $(el);
     var p, pX, pY;
-    var rtlFactor = s.rtl ? -1 : 1;
+    const rtlFactor = s.rtl ? -1 : 1;
 
     p = el.attr('data-swiper-parallax') || '0';
     pX = el.attr('data-swiper-parallax-x');
@@ -46,9 +48,9 @@ s.parallax = {
 
         });
         s.slides.each(function () {
-            var slide = $(this);
+            const slide = $(this);
             slide.find('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]').each(function () {
-                var progress = Math.min(Math.max(slide[0].progress, -1), 1);
+                const progress = Math.min(Math.max(slide[0].progress, -1), 1);
                 setParallaxTransform(this, progress);
             });
         });
@@ -56,8 +58,8 @@ s.parallax = {
     setTransition: function (duration) {
         if (typeof duration === 'undefined') duration = s.params.speed;
         s.container.find('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]').each(function(){
-            var el = $(this);
-            var parallaxDuration = parseInt(el.attr('data-swiper-parallax-duration'), 10) || duration;
+            const el = $(this);
+            let parallaxDuration = parseInt(el.attr('data-swiper-parallax-duration'), 10) || duration;
             if (duration === 0) parallaxDuration = 0;
             el.transition(parallaxDuration);
         });

@@ -34,7 +34,7 @@
   },
   "homepage": "http://www.idangero.us/swiper/",
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">=18.0.0"
   },
   "devDependencies": {
     "jshint": "~2.9.1",
@@ -55,7 +55,10 @@
   "scripts": {
     "test": "gulp build",
     "lint": "eslint src --ext .ts,.tsx,.js,.jsx --fix",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "lint:check": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "style": "dist/css/swiper.css"
 }
